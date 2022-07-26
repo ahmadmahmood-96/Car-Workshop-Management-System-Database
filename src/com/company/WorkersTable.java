@@ -1,6 +1,6 @@
 package com.company;
 
-import java.awt.EventQueue;
+import java.awt.*;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -12,6 +12,7 @@ import net.proteanit.sql.DbUtils;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JButton;
+import javax.swing.table.JTableHeader;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -43,6 +44,7 @@ public class WorkersTable extends JFrame {
      * Create the frame.
      */
     public WorkersTable() {
+        setTitle("WORKERS TABLE");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 850, 450);
         contentPane = new JPanel();
@@ -67,6 +69,7 @@ public class WorkersTable extends JFrame {
         setResizable(false);
 
         JTable table = new JTable();
+        table.setFont(new Font("Poppins", Font.PLAIN, 12));
         scrollPane.setViewportView(table);
         try {
             String url = "jdbc:mysql://localhost:3306/workshop";
@@ -75,8 +78,9 @@ public class WorkersTable extends JFrame {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection connection = DriverManager.getConnection(url, uname, pwd);
 
-            String query = "SELECT worker_id, first_name, last_name, " +
-                    "phone_number, address, branch_id, salary, work_hours, manager_id FROM Worker";
+            String query = "SELECT worker_id AS 'ID', first_name AS 'First Name', last_name AS 'Last Name', " +
+                    "phone_number AS 'Phone Number', address AS 'Address', branch_id AS 'Branch ID', " +
+                    "salary AS 'Salary', work_hours AS 'Work Hours', manager_id AS 'Manager ID' FROM Worker";
             PreparedStatement pst = connection.prepareStatement(query);
             ResultSet rs = pst.executeQuery();
             table.setModel(DbUtils.resultSetToTableModel(rs));
